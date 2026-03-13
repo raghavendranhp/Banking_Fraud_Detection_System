@@ -36,8 +36,6 @@ We evaluated standard classifiers alongside an anomaly detection baseline.
 - **F1 Score**: The harmonic mean of Precision and Recall, providing a balanced measure.
 - **ROC-AUC**: Measures the model's ability to discriminate between classes across different thresholds.
 
-*(Note: The exact final metric numbers are generated dynamically when running the `src/fraud_model.py` script.)*
-
 ---
 
 ## 3. Customer Risk Scoring Methodology
@@ -61,7 +59,4 @@ The derived composite `raw_risk_score` (0-100) is bucketed into actionable categ
 2.  **Model Selection**: Ensemble methods (Random Forest / XGBoost) generally outperform linear models on this data due to the complex, non-linear interactions between features like merchant risk and individual spending habits.
 3.  **Proactive Risk Management**: The new Customer Risk Score allows the bank to move from a reactive posture (catching fraud as it happens) to a proactive one (monitoring high-risk accounts before large losses occur).
 
-### Next Steps for Production
-- Deploy the XGBoost model behind a real-time API.
-- Re-train the model monthly to capture shifting fraud patterns.
-- Implement streaming feature generation (using tools like Kafka/Flink) to calculate rolling window features (e.g., "transactions in the last 10 minutes") instantly.
+
