@@ -34,13 +34,13 @@ def merge_data(customers, accounts, transactions, fraud_labels):
     if customers is None or accounts is None or transactions is None or fraud_labels is None:
         return None
         
-    # Merge transactions with fraud labels
+    #Merge transactions with fraud labels
     df = pd.merge(transactions, fraud_labels, on='transaction_id', how='left')
     
-    # Merge with accounts to get customer_id
+    #Merge with accounts to get customer_id
     df = pd.merge(df, accounts, on='account_id', how='left')
     
-    # Merge with customers to get demographic data
+    #Merge with customers to get demographic data
     df = pd.merge(df, customers, on='customer_id', how='left')
     
     print(f"Merged dataframe has {df.shape[0]} rows and {df.shape[1]} columns.")
@@ -54,7 +54,6 @@ def clean_data(df):
     if df is None:
         return None
         
-    # Example: Check for missing labels and handle them
     if 'fraud_flag' in df.columns:
         # Assuming unlabelled transactions are legitimate for now, or we drop them
         # For simplicity, filling missing flags with 0
