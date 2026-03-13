@@ -7,19 +7,18 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sys
 
-# Ensure correct path to src if needed for custom modules (like risk_scoring)
 sys.path.append(os.path.abspath('src'))
 from risk_scoring import calculate_customer_risk_score
 
-# Configuration
+#Configuration
 st.set_page_config(
     page_title="Banking Fraud Intelligence",
-    page_icon="🛡️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Load Models
+#Load Models
 @st.cache_resource
 def load_models():
     models_dir = "models"
@@ -35,7 +34,7 @@ def load_models():
         st.error("Model files not found. Please run the Jupyter Notebook first.")
         return None, None, None
 
-# Load Data
+#Load Data
 @st.cache_data
 def load_data():
     data_path = "data/featured_data.csv"
@@ -46,20 +45,20 @@ def load_data():
         st.error("Featured data not found. Please run the Jupyter Notebook first.")
         return None
 
-# Sidebar
-st.sidebar.title("🛡️ Bank-Intel")
+#Sidebar
+st.sidebar.title(" Bank-Intel")
 st.sidebar.markdown("---")
 page = st.sidebar.radio("Navigation", ["Overview", "Fraud Detection Engine", "Customer Risk Profiler"])
 
 
-# 1. Overview Page
+#Overview Page
 if page == "Overview":
     st.title("Banking Transaction Intelligence")
     st.markdown("Monitor transaction flow, summarize fraud impact, and identify macro patterns.")
     
     df = load_data()
     if df is not None:
-        # Key Metrics
+        #Key Metrics
         col1, col2, col3, col4 = st.columns(4)
         total_tx = len(df)
         total_fraud = df['fraud_flag'].sum()
@@ -73,7 +72,7 @@ if page == "Overview":
         
         st.markdown("---")
         
-        # Charts
+        #Charts
         col_chart1, col_chart2 = st.columns(2)
         
         with col_chart1:
@@ -99,7 +98,7 @@ if page == "Overview":
         st.dataframe(df.tail(100), use_container_width=True)
 
 
-# 2. Fraud Detection Page
+#Fraud Detection Page
 elif page == "Fraud Detection Engine":
     st.title("Fraud Detection Engine")
     st.markdown("Run specific transactions through the trained Machine Learning model to determine fraud probability.")
@@ -110,7 +109,6 @@ elif page == "Fraud Detection Engine":
     if model and df is not None:
         st.subheader("Live Transaction Inference")
         
-        # Select an existing transaction or a random one to test
         sample_tx = st.selectbox("Select a Sample Transaction ID to investigate:", df['transaction_id'].tail(50))
         tx_data = df[df['transaction_id'] == sample_tx].iloc[0]
         
@@ -125,32 +123,32 @@ elif page == "Fraud Detection Engine":
         })
         
         if st.button("Run ML Model Prediction"):
-            # Preprocess this single row
+            #Preprocess this single row
             tx_df = pd.DataFrame([tx_data])
             
-            # Drop cols not meant for modeling
+            #Drop cols not meant for modeling
             drop_cols = ['transaction_id', 'account_id', 'customer_id', 'timestamp', 'fraud_flag']
             X_infer = tx_df.drop(columns=[c for c in drop_cols if c in tx_df.columns])
             
-            # Encode
+            #Encode
             for col, le in encoders.items():
                 if col in X_infer.columns:
                     X_infer[col] = le.transform(X_infer[col].astype(str))
             
-            # Scale
+            #Scale
             Numerical_Cols = [c for c in X_infer.columns if c not in encoders.keys()]
             X_infer[Numerical_Cols] = scaler.transform(X_infer[Numerical_Cols])
             
-            # Predict
+            #Predict
             pred = model.predict(X_infer)[0]
             prob = model.predict_proba(X_infer)[0][1] if hasattr(model, 'predict_proba') else None
             
             st.markdown("---")
             st.subheader("Model Result")
             if pred == 1:
-                st.error(f"🚨 **ALERT: Transaction Flagged as Fraudulent!**")
+                st.error(f" **ALERT: Transaction Flagged as Fraudulent!**")
             else:
-                st.success(f"✅ **Transaction appears Legitimate.**")
+                st.success(f" **Transaction appears Legitimate.**")
                 
             if prob is not None:
                 st.write(f"Model Confidence (Fraud Probability): **{prob*100:.2f}%**")
@@ -172,7 +170,7 @@ elif page == "Fraud Detection Engine":
                     }))
                 st.plotly_chart(fig)
 
-# 3. Customer Risk Profiler
+#Customer Risk Profiler
 elif page == "Customer Risk Profiler":
     st.title("Customer Risk Profiler")
     st.markdown("Aggregate customer behavior across multiple transactions to identify high-risk accounts.")
@@ -181,7 +179,7 @@ elif page == "Customer Risk Profiler":
     if df is not None:
         risk_df = calculate_customer_risk_score(df)
         
-        # Risk Distribution Summary
+        #Risk Distribution Summary
         col1, col2 = st.columns([1, 2])
         with col1:
             st.subheader("Risk Distribution")
