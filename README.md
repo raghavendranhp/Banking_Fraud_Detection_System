@@ -1,17 +1,20 @@
-# Banking Transaction Intelligence & Fraud Detection System 🛡️
+# Banking Transaction Intelligence & Fraud Detection System 
 
 A comprehensive Machine Learning solution designed to detect potentially fraudulent banking transactions, predict customer credit risk, and generate actionable insights on transaction patterns. This project features a full end-to-end ML pipeline and an interactive Streamlit web dashboard.
 
-## 🌟 Key Features
+## Key Features
 
 1. **Fraud Detection Engine**: Utilizes XGBoost (along with other evaluated models) to accurately classify whether a live transaction is legitimate or fraudulent based on behavioral patterns and historical merchant risk.
 2. **Customer Risk Profiler**: Aggregates account-level transaction history to assign a composite risk score (Low, Medium, High) based on transaction volume, activity bursts, and exposure to high-risk merchants.
 3. **Interactive Dashboard**: A Streamlit frontend providing macro-level insights, a live inference interface, and individual customer profiling.
 4. **End-to-End ML Pipeline**: A unified Jupyter Notebook (`01_EDA_and_Modeling.ipynb`) handling everything from data cleaning and feature engineering to model training and serialization.
 
+
+## Live Demo
+
 ---
 
-## 🏗️ Project Architecture
+##  Project Architecture
 
 ```
 Banking_Fraud_Detection_System/
@@ -29,7 +32,7 @@ Banking_Fraud_Detection_System/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Prerequisites
 Ensure you have Python 3.8+ installed.
@@ -63,7 +66,7 @@ jupyter nbconvert --to notebook --execute --inplace notebooks/01_EDA_and_Modelin
 
 This process will create the `models/` directory with the trained XGBoost model and preprocessors, and output `featured_data.csv` into the `data/` folder.
 
-### 4. Launching the Dashboard 📊
+### 4. Launching the Dashboard 
 Once the models are generated, start the Streamlit interactive dashboard:
 
 ```bash
@@ -74,6 +77,6 @@ This will open your default web browser to the Bank-Intel interface where you ca
 
 ---
 
-## 📈 Evaluation & Insights
+## Evaluation & Insights
 - **Insights Report**: Please refer to `reports/insights.md` for a deeper dive into the highest risk transaction patterns, model selection rationale, and strategic recommendations for production deployment. 
 - **Models Evaluated**: Logistic Regression, Random Forest, XGBoost, and Isolation Forest. XGBoost was selected as the optimal supervised model based on the F1 Score.
