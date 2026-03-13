@@ -11,7 +11,7 @@ def calculate_customer_risk_score(df):
         
     df = df.copy()
     
-    # We aggregate at the customer level
+    #We aggregate at the customer level
     customer_risk = df.groupby('customer_id').agg(
         total_tx_volume=('transaction_amount', 'sum'),
         avg_tx_amount=('transaction_amount', 'mean'),
@@ -21,35 +21,34 @@ def calculate_customer_risk_score(df):
         high_risk_merchants_count=('merchant_risk_score', lambda x: (x > 0.5).sum())
     ).reset_index()
     
-    # Calculate a composite risk score (0 to 100)
-    # The weights here are hypothetical and should be tuned based on business logic or a learned model.
-    # We use min-max scaling roughly to get a score out of 100
+   
+
     
-    # 1. Volume Risk: higher total volume or max transaction relative to peers increases risk
+    #volume Risk: higher total volume or max transaction relative to peers increases risk
     volume_max = customer_risk['total_tx_volume'].max()
     if volume_max > 0:
         volume_risk = (customer_risk['total_tx_volume'] / volume_max) * 30
     else:
         volume_risk = 0
         
-    # 2. Activity Risk: very high frequency could be suspicious
+    #Activity Risk: very high frequency could be suspicious
     count_max = customer_risk['tx_count'].max()
     if count_max > 0:
         activity_risk = (customer_risk['tx_count'] / count_max) * 20
     else:
         activity_risk = 0
         
-    # 3. Merchant Risk: transactions at high-risk merchants
+    #Merchant Risk: transactions at high-risk merchants
     merchant_max = customer_risk['high_risk_merchants_count'].max()
     if merchant_max > 0:
         merchant_risk = (customer_risk['high_risk_merchants_count'] / merchant_max) * 50
     else:
         merchant_risk = 0
         
-    # Calculate Total Score
+    #Calculate Total Score
     customer_risk['raw_risk_score'] = volume_risk + activity_risk + merchant_risk
     
-    # Categorize Risk Score
+    #Categorize Risk Score
     def get_risk_label(score):
         if score > 75: return "High"
         elif score > 40: return "Medium"
