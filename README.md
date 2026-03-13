@@ -12,6 +12,9 @@ A comprehensive Machine Learning solution designed to detect potentially fraudul
 
 ## Live Demo
 
+![Bank Platform Demo](live_demo.gif)
+
+
 ---
 
 ##  Project Architecture
